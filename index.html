@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Muthu - Bookmarks</title>
-    <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,400i,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Actor|Anonymous+Pro|Nanum+Gothic+Coding&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -15,55 +15,115 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-summernote.min.js"></script>
+    <script type="text/javascript" src="scripts/angular-selectize.js"></script>
+    <script type="text/javascript" src="scripts/util.js"></script>
 </head>
 
-<body>
-    <div class="container">
+<body ng-app="myApp" ng-controller="myCtrl">
+    <div class="container" ng-cloak>
         <div class="row">
             <div class="col-md-3">
-                <h4>Bookmarks</h4>
+                <input class="form-control searching"  ng-model="search_text" placeholder="Search" ng-change="searching()" type="text" />
+                <div class="list-group">
+                    <a href="#" class="list-group-item" ng-click="selectedType('')">all</a>
+                    <a href="#" class="list-group-item" ng-repeat="types in supported_types" ng-click="selectedType(types.title)">{{types.title}}</a>
+                </div>
             </div>
             <div class="col-md-9">
-                <ul class="list-group">
-                    <li class="list-group-item search-container">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="search" placeholder="Search.." required>
-                        </div>                        
-                    </li>
-                </ul>
-                <ul class="list-group" id="mybookmarks">
-                </ul>
-            </div>
-        </div>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#summernote_modal">
-            +
-        </button>
-        <!-- Modal -->
-        <div class="modal fade" id="summernote_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="summernote_body">
-                        <div id="summernote"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_button">Close</button>
-                        <button type="button" class="btn btn-primary" id="save_changes">Save changes</button>
+                <div class="row">
+                    <div ng-repeat="article in articles | filter : {type:selected_type} track by $index" ng-click="show_preview(article)" ng-show="article.show" class="col-md-4 articles">
+                        <article>
+                            <div class="thumbnail" ng-if="article.thumbnail">
+                                <img ng-src="{{article.thumbnail}}" alt="Image" />
+                            </div>
+                            <div class="title">
+                                <h3>
+                                    <a href="{{article.url}}" ng-if="article.url" target="_blank">{{article.title}}</a>
+                                    <span ng-if="!article.url">{{article.title}}</span>
+                                </h3>
+                            </div>
+                            <div class="description" ng-if="article.content" ng-bind-html="article.content | unsafe"></div>
+                            <div class="dropdown option">
+                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                ...
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$index}}">
+                                <li><a href="#" ng-click="edit(article)">Edit</a></li>
+                                <li><a href="#" ng-click="remove(article.id)">Delete</a></li>
+                              </ul>
+                            </div>
+                        </article>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#summernote_modal" ng-click="summernote_open()">
+        +
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="summernote_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="summernote_body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="URL" ng-model="bookmark.url">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title" ng-model="bookmark.title">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Any Short Description" ng-model="bookmark.description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <summernote ng-model="bookmark.content" config="options"></summernote>
+                    </div>
+                    <div class="form-group">
+                        <selectize config='supported_types_config' options='supported_types' ng-model="bookmark.type"></selectize>
+                    </div>
+                    <div class="form-group">
+                        <selectize config='tags_config' id="tags" ng-model="bookmark.tags"></selectize>
+                    </div>
+                    <div class="form-group">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_button">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="save_changes()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="preview" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{preview.title}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body preview">
+                    <div>{{preview.description}}</div>
+                    <div ng-if="preview.content" ng-bind-html="preview.content | unsafe"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
     </script>
-    <script src="scripts/firebase.js"></script>
-    <script src="scripts/script.js"></script>
+    <script src="https://www.muthu.co/bookmarks/scripts/firebase.js"></script>
+    <!-- <script src="scripts/script.js"></script> -->
+    <script type="text/javascript" src="scripts/controller.js"></script>
 </body>
 
 </html>

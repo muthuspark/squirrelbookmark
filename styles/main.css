@@ -1,48 +1,17 @@
-html {
-    font-size: 1em;
-}
-
 body {
-    background-color: white;
-    font-family: 'Gentium Book Basic', sans-serif;
-    font-weight: 400;
-    line-height: 1.45;
-    color: #333;
-    padding: 10px;
+    background-color: #fff;
+    font-family: 'Nanum Gothic Coding', monospace;
+    padding: 30px; 
 }
 
-p {
-    margin-bottom: 0;
+a{ color: #000 }
+a:hover{
+    text-decoration: none;
 }
-
-h1,
-h2,
-h3,
-h4 {
-    margin: 1.414em 0 0.5em;
-    font-weight: inherit;
-    line-height: 1.2;
-    font-weight: 200;
+.h3, h3 {
+    font-family: 'Actor', monospace;
+    font-size: 16px;
 }
-
-h1 {
-    margin-top: 0;
-    font-size: 3.998em;
-}
-
-h2 {
-    font-size: 2.827em;
-}
-
-h3 {
-    margin-top: 0;
-    font-size: 1.999em;
-}
-
-h4 {
-    font-size: 1.414em;
-}
-
 small,
 .font_small {
     font-size: 0.707em;
@@ -92,10 +61,6 @@ small,
     padding: 10px;
 }
 
-#summernote_body {
-    padding: 0;
-}
-
 .note-editor.note-frame {
     border: none;
 }
@@ -103,11 +68,12 @@ small,
 [data-target="#summernote_modal"] {
     position: fixed;
     bottom: 20px;
-    right: 20px;
+    left: 20px;
     border-radius: 50%;
-    padding: 20px;
+    padding: 10px;
     width: 65px;
     height: 65px;
+    font-size: 30px;
 }
 
 .note-editor.note-frame .note-statusbar {
@@ -152,6 +118,22 @@ small,
     background-position: 50% 50%, 50% 50%;
     opacity: .75;
 }
+.thumbnail {
+  position: relative;
+    width: 100%;
+    height: 300px;
+  overflow: hidden;
+}
+.thumbnail img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
 
 .search-container {
     padding: 0;
@@ -165,10 +147,66 @@ small,
     border-radius: 0;
     padding-left: 1px;
 }
-.list-group {
-    margin-top: 1.414em;
-}
-
 .note-editor.note-frame .note-editing-area {
     margin-top: 50px;
+}
+.form-control{
+    background-color: #efefef;
+    border: none;
+}
+.selectize-input {
+    border: none;
+    background: #efefef;
+}
+.selectize-control.multi .selectize-input> div {
+    background: #007bff !important;
+    color: #fff !important;
+}
+.articles .thumbnail {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 15px;
+    border-radius: .25rem;
+}
+.articles{
+  margin-bottom: 15px;
+  position: relative;
+}
+.articles:after {
+    content: ""; /* This is necessary for the pseudo element to work. */ 
+    display: block; /* This will put the pseudo element on its own line. */
+    margin: 0 auto; /* This will center the border. */
+    width: 100%; /* Change this to whatever width you want. */
+    padding-top: 20px; /* This creates some space between the element and the border. */
+    border-bottom: 1px solid #ccc; /* This creates the border. Replace black with whatever color you want. */
+}
+article{
+    height: 300px;
+}
+.description{
+    color: #5d5d5d;
+    height: 10.2em;
+    line-height: 1.2em;
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+.searching{
+    margin-bottom: 30px;
+}
+.preview img{
+    width: 100%;
+}
+article .option {
+    position: absolute;
+    bottom: 15px;
+    right: 0;
+    font-weight: bold;
+    color: #ccc;
+}
+article .dropdown-toggle::after {
+border: none;
+display: none;
+}
+article .dropdown-menu.show{
+    padding: 15px;
 }
