@@ -34,6 +34,7 @@ app.controller('myCtrl', function($scope) {
 	        }
 	        $scope.articles.reverse();
 	        $('#tags')[0].selectize.addOption(tag_options);
+            console.log($scope.articles);
 	        $scope.$apply();
 	    });
 
@@ -50,6 +51,15 @@ app.controller('myCtrl', function($scope) {
             //some error
         }
     });
+
+    $scope.getDate = function(datevalue) {
+        return new Date(datevalue).getDate()
+    }
+
+    $scope.getMonth = function(datevalue) {
+        var months = ['Jan', 'Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+        return months[new Date(datevalue).getMonth()];
+    }
 
     $scope.supported_types = [
 	  {id: CONSTANTS.VIDEO, title: CONSTANTS.VIDEO},

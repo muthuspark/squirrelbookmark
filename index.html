@@ -36,27 +36,33 @@
             <div class="col-md-9">
                 <div class="row">
                     <div ng-repeat="article in articles | filter : {type:selected_type} track by $index" ng-click="show_preview(article)" ng-show="article.show" class="col-md-4 articles">
-                        <article>
-                            <div class="thumbnail" ng-if="article.thumbnail">
-                                <img ng-src="{{article.thumbnail}}" alt="Image" />
-                            </div>
-                            <div class="title">
-                                <h3>
-                                    <a href="{{article.url}}" ng-if="article.url" target="_blank">{{article.title}}</a>
-                                    <span ng-if="!article.url">{{article.title}}</span>
-                                </h3>
-                            </div>
-                            <div class="description" ng-if="article.content" ng-bind-html="article.content | unsafe"></div>
-                            <div class="dropdown option">
-                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <a href="{{article.url}}" target="_blank" ng-if="article.url">
+                            <figure class="snip1529">
+                                <div class="thumbnail" ng-if="article.thumbnail" style="background: url('{{article.thumbnail}}')">
+                                </div>
+                                <figcaption>
+                                    <h3>{{article.title}}</h3>
+                                </figcaption>
+                            </figure>
+                        </a>
+                        <div ng-if="!article.url">
+                            <figure class="snip1529">
+                                <div class="thumbnail" style="background: #fff">
+                                </div>
+                              <figcaption>
+                                <h3>{{article.title}}</h3>
+                              </figcaption>
+                            </figure>
+                        </div>
+                        <div class="dropdown option">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 ...
-                              </button>
-                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$index}}">
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$index}}">
                                 <li><a href="#" ng-click="edit(article)">Edit</a></li>
                                 <li><a href="#" ng-click="remove(article.id)">Delete</a></li>
-                              </ul>
-                            </div>
-                        </article>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

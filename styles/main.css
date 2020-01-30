@@ -1,7 +1,10 @@
 body {
     background-color: #fff;
     font-family: 'Nanum Gothic Coding', monospace;
-    padding: 30px; 
+    padding: 30px;
+    color: rgba(0,0,0,0.8);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 a{ color: #000 }
@@ -165,23 +168,12 @@ small,
 .articles .thumbnail {
     width: 100%;
     height: 200px;
-    margin-bottom: 15px;
-    border-radius: .25rem;
+    background-size: cover !important;
+    opacity: 0.5;
 }
 .articles{
   margin-bottom: 15px;
   position: relative;
-}
-.articles:after {
-    content: ""; /* This is necessary for the pseudo element to work. */ 
-    display: block; /* This will put the pseudo element on its own line. */
-    margin: 0 auto; /* This will center the border. */
-    width: 100%; /* Change this to whatever width you want. */
-    padding-top: 20px; /* This creates some space between the element and the border. */
-    border-bottom: 1px solid #ccc; /* This creates the border. Replace black with whatever color you want. */
-}
-article{
-    height: 300px;
 }
 .description{
     color: #5d5d5d;
@@ -196,17 +188,135 @@ article{
 .preview img{
     width: 100%;
 }
-article .option {
+.articles .option {
     position: absolute;
-    bottom: 15px;
-    right: 0;
-    font-weight: bold;
-    color: #ccc;
+    top: -10px;
+    right: 10px;
+    background: none;
 }
-article .dropdown-toggle::after {
+.articles .option button {
+  background: none;
+  color: #fff;
+}
+.articles .dropdown-toggle::after {
 border: none;
 display: none;
 }
-article .dropdown-menu.show{
+.articles .dropdown-menu.show{
     padding: 15px;
 }
+
+.snip1529 {
+  background-color: #000000;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  color: #ffffff;
+  min-width: 250px;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+  border-radius: 0.25rem;
+  width: 100%;
+}
+
+.snip1529 * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+
+.snip1529 img {
+  max-width: 100%;
+  vertical-align: top;
+  position: relative;
+  opacity: 0.75;
+}
+
+.snip1529 figcaption {
+  padding: 25px 20px 25px;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+}
+
+.snip1529 .date {
+  background-color: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 800;
+  min-height: 40px;
+  min-width: 30px;
+  padding: 5px 0;
+  position: absolute;
+  right: 15px;
+  text-align: center;
+  text-transform: uppercase;
+  top: 0;
+}
+
+.snip1529 .date span {
+  display: block;
+  line-height: 14px;
+}
+
+.snip1529 .date .month {
+  font-size: 11px;
+}
+
+.snip1529 h3,
+.snip1529 p {
+  margin: 0;
+  padding: 0;
+}
+
+.snip1529 h3 {
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.snip1529 .hover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  background-color: rgba(236, 188, 46, 0.75);
+  display: flex;
+  font-size: 65px;
+  justify-content: center;
+  opacity: 0;
+}
+
+.snip1529 a {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+button:focus {
+outline: none;
+}
+
+
+/*.snip1529:hover .hover,
+.snip1529.hover .hover {
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  opacity: 1;
+}
+
+.snip1529:hover figcaption,
+.snip1529.hover figcaption {
+  opacity: 0;
+}
+
+.snip1529:hover .date,
+.snip1529.hover .date {
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+*/
