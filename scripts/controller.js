@@ -1,56 +1,49 @@
 var app = angular.module('myApp', ['summernote', 'selectize']);
 
-app.controller('myCtrl', function($scope) {
-
-	var database = firebase.database();
-	var userid = location.search.split('=')[1];
-	firebase.auth().signInAnonymously().catch(function(error) {
-	    var errorCode = error.code;
-	    var errorMessage = error.message;
-	});
+app.controller('myCtrl', function($scope, $http) {
 
 	function fetchFreshData(){
 		$scope.articles = [];
 		var tags = [];
-		firebase.database().ref('/bookmarks/').once('value').then(function(snapshot) {
-	        var contents = snapshot.val();
-	        for (key in contents) {
-	        	content = contents[key];
-	        	if(content.type) {
-	        		tags = tags.concat(content.tags);
-	        		content['show'] = true;
-	        		$scope.articles.push(content);	
-	        	}
-	        }
-	        tags = [...new Set(tags)];
-	        tag_options = []
-	        for (i in tags) {
-				if(!tag_options[tags[i]]){
-					tag_options.push({
-						'id': tags[i],
-						'title': tags[i]
-					});
-				}
-	        }
-	        $scope.articles.reverse();
-	        $('#tags')[0].selectize.addOption(tag_options);
-            console.log($scope.articles);
-	        $scope.$apply();
-	    });
 
+
+        $http({
+          method: 'GET',
+          url: 'http://localhost:5000/all_bookmarks'
+        }).then(function successCallback(response) {
+            console.log(response.data.message);
+
+            var contents = response.data.message;
+            for (key in contents) {
+                content = contents[key];
+                if(content.type) {
+                    tags = tags.concat(content.tags);
+                    content['show'] = true;
+                    $scope.articles.push(content);  
+                }
+            }
+            tags = [...new Set(tags)];
+            tag_options = []
+            for (i in tags) {
+                if(!tag_options[tags[i]]){
+                    tag_options.push({
+                        'id': tags[i],
+                        'title': tags[i]
+                    });
+                }
+            }
+            $scope.articles.reverse();
+            $('#tags')[0].selectize.addOption(tag_options);
+            console.log($scope.articles);
+            $scope.$apply();
+            // this callback will be called asynchronously
+            // when the response is available
+          }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+          });
 	}
-	    
-    var authFlag = false;
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user && !authFlag) {
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-            authFlag = true;
-            fetchFreshData();
-        } else {
-            //some error
-        }
-    });
+	fetchFreshData();
 
     $scope.getDate = function(datevalue) {
         return new Date(datevalue).getDate()
@@ -121,7 +114,7 @@ app.controller('myCtrl', function($scope) {
 
     	if($scope.edit_mode){
     		$scope.edit_mode = false;//reset it.
-    		firebase.database().ref('bookmarks/' + $scope.bookmark.id).update($scope.bookmark);
+    		// firebase.database().ref('bookmarks/' + $scope.bookmark.id).update($scope.bookmark);
         	fetchFreshData();
     	}
 
@@ -183,7 +176,7 @@ app.controller('myCtrl', function($scope) {
 
 
     $scope.remove = function(id) {
-    	firebase.database().ref('bookmarks/' + id).remove();
+    	//firebase.database().ref('bookmarks/' + id).remove();
     	fetchFreshData();
     }
 

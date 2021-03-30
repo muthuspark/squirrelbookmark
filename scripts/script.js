@@ -1,20 +1,17 @@
 $(document).ready(function() {
-
-    var database = firebase.database();
-    var userid = location.search.split('=')[1];
-    firebase.auth().signInAnonymously().catch(function(error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-    });
-
     function fetchFreshData() {
-        firebase.database().ref('/bookmarks/').once('value').then(function(snapshot) {
-            var contents = snapshot.val();
-            for (key in contents) {
-               // console.log(JSON.parse(contents[key]))
-                insertIntoToPage(JSON.parse(contents[key]).html, key);
-            }
-        });
+
+        fetch("http://localhost:5000/all_bookmarks")
+            .then(response => {
+                var contents = response.message;
+                for (key in contents) {
+                   // console.log(JSON.parse(contents[key]))
+                    insertIntoToPage(JSON.parse(contents[key]).html, key);
+                }
+            })
+            .catch(error => {
+                // handle the error
+            });
     }
 
     function insertIntoToPage(content, key) {
@@ -53,17 +50,7 @@ $(document).ready(function() {
         return regexp.test(s);
     }
 
-    var authFlag = false;
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user && !authFlag) {
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-            authFlag = true;
-            fetchFreshData();
-        } else {
-            //some error
-        }
-    });
+    fetchFreshData();
     $('#summernote').summernote({
         tabsize: 4,
         height: 200,
