@@ -54,9 +54,7 @@
                             </figure>
                         </div>
                         <div class="dropdown option">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                ...
-                            </button>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu{{$index}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span>&hellip;</span></button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$index}}">
                                 <li><a href="#" ng-click="edit(article)">Edit</a></li>
                                 <li><a href="#" ng-click="remove(article.id)">Delete</a></li>
@@ -123,6 +121,7 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="scripts/script.js"></script>
     <script type="text/javascript" src="scripts/controller.js"></script>
 </body>
 
